@@ -45,24 +45,23 @@ driver.implicitly_wait(15)
 igloo_entrance = driver.find_element(By.LINK_TEXT, "here").click()
 print("Entered igloo")
 
-#gets all the b's (ie titles anad etc) in the page
-page_b = driver.find_elements(By.TAG_NAME, 'b')
 
-# print item names as single list
-for item in page_b[15:]:
+
+#get all item names and return as single list of strings
+page_b = driver.find_elements(By.TAG_NAME, 'b')
+inventory = []
+for count, item in enumerate(page_b[13:]):
     if item.text == "Search Neopets:":
         break
-    print(item.text)
+    # print(count, item.text)
+    inventory.append(item.text)
+print(inventory)
 
 
-# page_prices = driver.find_elements(By.TAG_NAME, 'br')
-# # page_prices = driver.find_elements(By.NAME,"items_for_sale")
-# # print(page_prices)
-# # print(type(page_prices))
-# # # print(page_prices.)
 
 #get item prices
 form_items = driver.find_element(By.NAME, "items_for_sale")
+
 item_details = form_items.text.split('\n')
 # print(item_details)
 
@@ -79,6 +78,13 @@ for list in item_prices:
     for item in list: 
         flat_prices.append(item)
 print(flat_prices)
+
+
+#sanity check -- if inventory and price arrays differ in size, stop here
+if len(inventory) == len(flat_prices):
+    print("Good size: ", len(inventory))
+else:
+    print("OUR SHIP IS TAKING ON WATER", len(inventory), len(flat_prices))
 
 #store item names as individual lists with igloo price 
 # data = [] 
