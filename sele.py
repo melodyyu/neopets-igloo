@@ -7,12 +7,13 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By 
 
 import time
+import re 
 
-from data.py import *
+# from data.py import *
 
 #open selenium browser 
 options = webdriver.ChromeOptions()
-options.add_argument("--headless=new") #leave this commented so browser appears
+options.add_argument("--headless=new") #leave this commented for browser to appear
 options.page_load_strategy = 'none'
 
 chrome_path = ChromeDriverManager().install()
@@ -54,7 +55,35 @@ for item in page_b[15:]:
     print(item.text)
 
 
+# page_prices = driver.find_elements(By.TAG_NAME, 'br')
+# # page_prices = driver.find_elements(By.NAME,"items_for_sale")
+# # print(page_prices)
+# # print(type(page_prices))
+# # # print(page_prices.)
+
+#get item prices
+form_items = driver.find_element(By.NAME, "items_for_sale")
+item_details = form_items.text.split('\n')
+# print(item_details)
+
+item_prices = []
+for item in item_details:
+    if "Cost : " in item:
+        cost = re.findall(r'[\d]+', item) #works but returns list of lists 
+        item_prices.append(cost)
+# print(item_prices)
+
+#flattens prices into single list
+flat_prices = []
+for list in item_prices:
+    for item in list: 
+        flat_prices.append(item)
+print(flat_prices)
+
+#store item names as individual lists with igloo price 
+# data = [] 
 
 
-#prevents selenium browser from autoclosing (when commented out)
+
+#If commented out, prevents selenium browser from autoclosing after script runs
 # time.sleep(20) 
