@@ -82,12 +82,15 @@ print(flat_prices)
 
 #sanity check -- if inventory and price arrays differ in size, stop here
 if len(inventory) == len(flat_prices):
-    print("Good size: ", len(inventory))
+    print("GREAT SIZE: ", len(inventory))
 else:
     print("OUR SHIP IS TAKING ON WATER", len(inventory), len(flat_prices))
 
-#store item names as individual lists with igloo price 
-# data = [] 
+#store item names as a dictionary of lists 
+data = {
+    "Name": inventory,
+    "Igloo Prices": flat_prices
+}
 
 
 
