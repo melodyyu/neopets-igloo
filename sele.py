@@ -57,8 +57,6 @@ for count, item in enumerate(page_b[13:]):
     inventory.append(item.text)
 print(inventory)
 
-
-
 #get item prices
 form_items = driver.find_element(By.NAME, "items_for_sale")
 
@@ -83,15 +81,14 @@ print(flat_prices)
 #sanity check -- if inventory and price arrays differ in size, stop here
 if len(inventory) == len(flat_prices):
     print("GREAT SIZE: ", len(inventory))
+
+    #output item names to .txt file
+    with open("inventory.txt", "a") as file:
+        for name in inventory:
+            file.write(name+"\n")
+    file.close()
 else:
     print("OUR SHIP IS TAKING ON WATER", len(inventory), len(flat_prices))
-
-#store item names as a dictionary of lists 
-data = {
-    "Name": inventory,
-    "Igloo Prices": flat_prices
-}
-
 
 
 #If commented out, prevents selenium browser from autoclosing after script runs
