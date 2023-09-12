@@ -48,20 +48,27 @@ print("Entered igloo")
 
 
 #get all item names and return as single list of strings
-page_b = driver.find_elements(By.TAG_NAME, 'b')
-inventory = []
-for count, item in enumerate(page_b[13:]):
-    if item.text == "Search Neopets:":
-        break
-    # print(count, item.text)
-    inventory.append(item.text)
-print(inventory)
+# page_b = driver.find_elements(By.TAG_NAME, 'b')
+# inventory = []
+# for count, item in enumerate(page_b[13:]):
+#     if item.text == "Search Neopets:":
+#         break
+#     # print(count, item.text)
+#     inventory.append(item.text)
+# print(inventory)
 
 #get item prices
 form_items = driver.find_element(By.NAME, "items_for_sale")
 
 item_details = form_items.text.split('\n')
 # print(item_details)
+
+#function also gets item names, but not through tag names
+inventory = []
+for item in item_details:
+    if len(item) > 2 and bool(re.search(r'\d', item)) == False:
+        inventory.append(item)
+print(inventory)
 
 item_prices = []
 for item in item_details:
@@ -81,12 +88,14 @@ print(flat_prices)
 #sanity check -- if inventory and price arrays differ in size, stop here
 if len(inventory) == len(flat_prices):
     print("GREAT SIZE: ", len(inventory))
-
-    #output item names to .txt file
-    with open("inventory.txt", "a") as file:
-        for name in inventory:
-            file.write(name+"\n")
+    
+    #outputs item name,cost to .txt file
+    with open("dict.txt", "a") as file:
+        inv_dict = dict(zip(inventory, flat_prices))
+        for key,value in inv_dict.items():
+            file.write(key+" "+value+"\n")
     file.close()
+    print(inv_dict)
 else:
     print("OUR SHIP IS TAKING ON WATER", len(inventory), len(flat_prices))
 
