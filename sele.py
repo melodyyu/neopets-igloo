@@ -46,58 +46,44 @@ igloo_entrance = driver.find_element(By.LINK_TEXT, "here").click()
 print("Entered igloo")
 
 
-
-#get all item names and return as single list of strings
-# page_b = driver.find_elements(By.TAG_NAME, 'b')
-# inventory = []
-# for count, item in enumerate(page_b[13:]):
-#     if item.text == "Search Neopets:":
-#         break
-#     # print(count, item.text)
-#     inventory.append(item.text)
-# print(inventory)
-
-#get item prices
+#get item information
 form_items = driver.find_element(By.NAME, "items_for_sale")
-
 item_details = form_items.text.split('\n')
 # print(item_details)
 
-#function also gets item names, but not through tag names
+#get all item names and costs. Return as single list of strings
 inventory = []
+costs = []
 for item in item_details:
     if len(item) > 2 and bool(re.search(r'\d', item)) == False:
         inventory.append(item)
-print(inventory)
-
-item_prices = []
-for item in item_details:
     if "Cost : " in item:
         cost = re.findall(r'[\d]+', item) #works but returns list of lists 
-        item_prices.append(cost)
-# print(item_prices)
+        costs.append(cost)
+print(inventory, "\n", costs)
 
 #flattens prices into single list
-flat_prices = []
-for list in item_prices:
+item_costs = []
+for list in costs:
     for item in list: 
-        flat_prices.append(item)
-print(flat_prices)
+        item_costs.append(item)
+print(item_costs)
 
 
 #sanity check -- if inventory and price arrays differ in size, stop here
-if len(inventory) == len(flat_prices):
+if len(inventory) == len(item_costs):
     print("GREAT SIZE: ", len(inventory))
-    
+
     #outputs item name,cost to .txt file
     with open("dict.txt", "a") as file:
-        inv_dict = dict(zip(inventory, flat_prices))
+        inv_dict = dict(zip(inventory, item_costs))
         for key,value in inv_dict.items():
             file.write(key+" "+value+"\n")
     file.close()
     print(inv_dict)
+
 else:
-    print("OUR SHIP IS TAKING ON WATER", len(inventory), len(flat_prices))
+    print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
 
 
 #If commented out, prevents selenium browser from autoclosing after script runs
