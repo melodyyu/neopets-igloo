@@ -1,9 +1,16 @@
 import pandas as pd
-import sele
+
+#import other files in directory
+import filter
 
 
-#Create dF with column names
 # df = pd.DataFrame(columns=['Name', 'Igloo Price', 'Jellyneo Price', 'Category'])
-df = pd.DataFrame(sele.data)
 
+##Create dF with dictionary of lists 
+data = {
+    "Name": filter.item_names,
+    "Igloo Prices": filter.item_prices
+}
+
+df = pd.DataFrame(data)
 print(df)

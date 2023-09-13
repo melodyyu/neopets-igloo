@@ -51,14 +51,14 @@ form_items = driver.find_element(By.NAME, "items_for_sale")
 item_details = form_items.text.split('\n')
 # print(item_details)
 
-#get all item names and costs. Return as single list of strings
+#get all item names and costs. 
 inventory = []
 costs = []
 for item in item_details:
     if len(item) > 2 and bool(re.search(r'\d', item)) == False:
-        inventory.append(item)
+        inventory.append(item) #Returns single list of strings
     if "Cost : " in item:
-        cost = re.findall(r'[\d]+', item) #works but returns list of lists 
+        cost = re.findall(r'[\d]+', item) #Returns list of lists 
         costs.append(cost)
 print(inventory, "\n", costs)
 
@@ -75,10 +75,10 @@ if len(inventory) == len(item_costs):
     print("GREAT SIZE: ", len(inventory))
 
     #outputs item name,cost to .txt file
-    with open("dict.txt", "a") as file:
+    with open("inventory.txt", "a") as file:
         inv_dict = dict(zip(inventory, item_costs))
         for key,value in inv_dict.items():
-            file.write(key+" "+value+"\n")
+            file.write(key+":"+value+"\n")
     file.close()
     print(inv_dict)
 
