@@ -45,6 +45,7 @@ igloo_entrance = driver.find_element(By.LINK_TEXT, "here").click()
 print("Entered igloo")
 
 counter = 0
+total_time = 0
 for i in range(5):
     start = time.time()
 
@@ -92,7 +93,10 @@ for i in range(5):
     time.sleep(20) #use this to run the script multiple times --this is the time block in between
     counter += 1 
     end = time.time()
-    print(counter, end-start) 
+    interval_time = end-start-20
+    total_time = total_time + (end-start)
+    print("ROUND: ", counter, '\n', 'TIME NEEDED TO RUN: ', "{:.2f}".format(interval_time), '\n',
+                         'TOTAL TIME TAKEN: ', "{:.2f}".format(total_time), '\n\n\n\n\n') 
 
 
 #run script multiple times 
