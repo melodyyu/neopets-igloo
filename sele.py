@@ -9,8 +9,7 @@ from selenium.webdriver.common.by import By
 import time
 import re 
 
-# from data.py import *
-
+    
 #open selenium browser 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new") #leave this commented for browser to appear
@@ -45,46 +44,60 @@ driver.implicitly_wait(15)
 igloo_entrance = driver.find_element(By.LINK_TEXT, "here").click()
 print("Entered igloo")
 
+counter = 0
+for i in range(5):
+    start = time.time()
 
-#get item information
-form_items = driver.find_element(By.NAME, "items_for_sale")
-item_details = form_items.text.split('\n')
-# print(item_details)
+    #get item information
+    form_items = driver.find_element(By.NAME, "items_for_sale")
+    item_details = form_items.text.split('\n')
+    # print(item_details)
 
-#get all item names and costs. 
-inventory = []
-costs = []
-for item in item_details:
-    if len(item) > 2 and bool(re.search(r'\d', item)) == False:
-        inventory.append(item) #Returns single list of strings
-    if "Cost : " in item:
-        cost = re.findall(r'[\d]+', item) #Returns list of lists 
-        costs.append(cost)
-print(inventory, "\n", costs)
+    #get all item names and costs. 
+    inventory = []
+    costs = []
+    for item in item_details:
+        if len(item) > 2 and bool(re.search(r'\d', item)) == False:
+            inventory.append(item) #Returns single list of strings
+        if "Cost : " in item:
+            cost = re.findall(r'[\d]+', item) #Returns list of lists 
+            costs.append(cost)
+    # print(inventory, "\n", costs)
 
-#flattens prices into single list
-item_costs = []
-for list in costs:
-    for item in list: 
-        item_costs.append(item)
-print(item_costs)
-
-
-#sanity check -- if inventory and price arrays differ in size, stop here
-if len(inventory) == len(item_costs):
-    print("GREAT SIZE: ", len(inventory))
-
-    #outputs item name,cost to .txt file
-    with open("inventory.txt", "a") as file:
-        inv_dict = dict(zip(inventory, item_costs))
-        for key,value in inv_dict.items():
-            file.write(key+":"+value+"\n")
-    file.close()
-    print(inv_dict)
-
-else:
-    print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
+    #flattens prices into single list
+    item_costs = []
+    for list in costs:
+        for item in list: 
+            item_costs.append(item)
+    # print(item_costs)
 
 
-#If commented out, prevents selenium browser from autoclosing after script runs
-# time.sleep(20) 
+    #sanity check -- if inventory and price arrays differ in size, stop here
+    if len(inventory) == len(item_costs):
+        print("GREAT SIZE: ", len(inventory))
+
+        #outputs item name,cost to .txt file
+        with open("inventory.txt", "a") as file:
+            inv_dict = dict(zip(inventory, item_costs))
+            for key,value in inv_dict.items():
+                file.write(key+":"+value+"\n")
+        file.close()
+        print(inv_dict)
+
+    else:
+        print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
+
+
+    #If commented out, prevents selenium browser from autoclosing after script runs
+    time.sleep(20) #use this to run the script multiple times --this is the time block in between
+    counter += 1 
+    end = time.time()
+    print(counter, end-start) 
+
+
+#run script multiple times 
+# def main():
+#     for i in range(5):
+
+#         time.sleep(60)
+        #run all the actions in this script
