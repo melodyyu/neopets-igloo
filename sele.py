@@ -47,7 +47,7 @@ print("Entered igloo")
 
 counter = 0
 total_time = 0
-for i in range(5):
+for i in range(10):
     start = time.time()
 
     #get item information
@@ -76,7 +76,7 @@ for i in range(5):
 
     #sanity check -- if inventory and price arrays differ in size, stop here
     if len(inventory) == len(item_costs):
-        print("GREAT SIZE: ", len(inventory))
+        print("NAME/PRICE ARRAYS ARE GOOD TO GO, GREAT SIZE:", len(inventory))
 
         inv_dict = dict(zip(inventory, item_costs))
 
@@ -120,7 +120,7 @@ for i in range(5):
 
         #file and inventory stats
         print("FILE IS THIS LONG:{}, PAGE INVENTORY IS THIS LONG:{}".format(len(file_line), len(inv_dict)))
-        print(inv_dict, '\n', file_line)  
+        print(inv_dict, '\n\n\n\n', file_line)  
 
     else:
         print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
@@ -134,8 +134,8 @@ for i in range(5):
     end = time.time()
     interval_time = end-start-20
     total_time = total_time + (end-start)
-    print("ROUND: ", counter, '\n', 'TIME NEEDED FOR THIS ROUND TO RUN: ', "{:.2f}".format(interval_time),
-                             '\n','TOTAL TIME TAKEN: ', "{:.2f}".format(total_time), '\n\n\n\n\n\n') 
+    print("ROUND:{}".format(counter), '\n', 'TIME NEEDED FOR THIS ROUND TO RUN: {:.2f}'.format(interval_time),
+                             '\n','TOTAL TIME TAKEN: {:.2f}'.format(total_time), '\n\n\n\n\n\n') 
 
 
 #run script multiple times 
