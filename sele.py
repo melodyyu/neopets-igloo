@@ -78,107 +78,48 @@ for i in range(2):
     if len(inventory) == len(item_costs):
         print("GREAT SIZE: ", len(inventory))
 
-        #outputs item name,cost to .txt file
-        # with open("inventory.txt", "a+") as file:
-        #     #set file pointer to top of file (it defaults at end)
-
-    
- 
-        inv_dict = OrderedDict(zip(inventory, item_costs)) #create dictionary from the two lists
-        #     #write inventory as name:price pairs
-        #     for key,value in inv_dict.items():
-        #         file.seek(0)
-        #         file_line = file.read().splitlines()
-        #         print(file_line)
-
-        #         if key not in file_line:
-        #             file.write(key+":"+value+"\n")
-        #         else:
-        #             pass
-        # file.close()
-        # print(inv_dict)
-
-
-        # for key,value in inv_dict.items():
-        #     with open("inventory.txt", "a+") as file:
-
-        #         file.seek(0)
-        #         file_line = file.read().splitlines()
-        #         # print(file_line)
-
-        #         print(len(file_line))
-                
-        #         # for line in file_line: 
-                        
-        #         #     if key not in file_line:
-        #         #         print(key, value)
-        #         #         file.write(key+":"+value+"\n")
-
-        #             # print("already in")
-        #         #     pass
-        #         # else: 
-        #         #     file.write(key+":"+value+"\n")
-        #     file.close()
-        # print(inv_dict)
+        inv_dict = dict(zip(inventory, item_costs))
 
         with open("inventory.txt", "a+") as file:
             file.seek(0)
             file_line = file.read().splitlines()
             # print("this is the file line (size: ", len(file_line), "): \n", file_line)
 
-            # for i in file_line:
-            #     print(i)
             #if file is empty, append entire inventory list to it
             if len(file_line) == 0:
                 print("Nothing in file so far")
                 for key, value in inv_dict.items():
                     file.write(key+":"+value+"\n")
 
-
-            # else:
-            #     file_line = dict(file_line)
-            #     for key, value in inv_dict:
-            #         if key not in file_line: 
-            #             file.write(key+":"+value+"\n")
-            #             print("wrote something, SPECIFICALLY: {}:{}".format(key, value))
-
-
             # #if file is not empty, check name against existing entries; add only if no dupes           
-            # else: 
-                print("im in here")
-                for key,value in inv_dict.items():
-                    for i in range(len(file_line)):
- 
-                        print("compared {} and {}, round:{}".format(key, file_line[i],i))
-                        if key not in file_line[i]:
-                            print("wrote something, SPECIFICALLY: {}:{}".format(key, value))
-                            file.write(key+":"+value+"\n")
-                            # i+=1
-                            # break #--->gets stuck on round1 max. without it, checks for dupe, but then proceeds to add it like len(file_line-1) times to inventory file
-                        else:
-                            print("BROKE OUT BC OF {} and {}".format(key, file_line[i]))
-                            # i+=1
-                            # break
-                        i+=1
-                        # break #--> doesnt increment rounds at all
-                    # break
+            else: 
+                print("File occupied")        
                         
-                # result = any(key in file_line for key, value in inv_dict.items())
-                # print(result)
-                # if result == False: #key does not exist in txt file
-                #     file.write(key+":"+value+"\n")       
-                #     print("wrote something, specifically:", key+":"+value)
+                content_list = set() #store existing names in txt file for ez lookup
+                new_items = [] #items that aren't currently in txt file
 
-                # for line in file_line:
-                #     for key, value in inv_dict.items():      
-                #         print(type(key), type(file_line))       
-                #         result = any(key in file_line for key in inv_dict.items())       
-                #         if result == False:
-                #             print("NOT IN:", key, value)
-                #             file.write(key+":"+value+"\n")
+                #take names currently in file and add to set 
+                for line in file_line:
+                    index = line.index(":")
+                    content_list.add(line[:index])
+
+                #check if the items in inv_dict is new; add if it is 
+                for item in range(len(inventory)):
+                    if inventory[item] not in content_list:
+                        new_items.append(inventory[item])
+                        content_list.add(inventory[item]) 
+
+                # print(new_items)
+                # print(content_list)
+                
+                #append new items to txt file as name:price 
+                for new_item in new_items:
+                    file.write(new_item+":"+inv_dict[new_item]+"\n")
+
         file.close()
         print("FILE IS THIS LONG:{}, PAGE INVENTORY IS THIS LONG:{}".format(len(file_line), len(inv_dict)))
-        print(inv_dict)
+        print(inv_dict)  
+        print('\n', file_line)
 
     else:
         print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
