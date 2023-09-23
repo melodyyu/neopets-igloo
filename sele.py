@@ -1,6 +1,5 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service 
@@ -8,8 +7,6 @@ from selenium.webdriver.common.by import By
 
 import time
 import re 
-
-from collections import OrderedDict
     
 #open selenium browser 
 options = webdriver.ChromeOptions()
@@ -47,7 +44,7 @@ print("Entered igloo")
 
 counter = 0
 total_time = 0
-for i in range(10):
+for i in range(50):
     start = time.time()
 
     #get item information
