@@ -47,7 +47,7 @@ print("Entered igloo")
 
 counter = 0
 total_time = 0
-for i in range(2):
+for i in range(5):
     start = time.time()
 
     #get item information
@@ -81,7 +81,7 @@ for i in range(2):
         inv_dict = dict(zip(inventory, item_costs))
 
         with open("inventory.txt", "a+") as file:
-            file.seek(0)
+            file.seek(0) #starts looking through top of file
             file_line = file.read().splitlines()
             # print("this is the file line (size: ", len(file_line), "): \n", file_line)
 
@@ -94,7 +94,7 @@ for i in range(2):
             # #if file is not empty, check name against existing entries; add only if no dupes           
             else: 
                 print("File occupied")        
-                        
+
                 content_list = set() #store existing names in txt file for ez lookup
                 new_items = [] #items that aren't currently in txt file
 
@@ -117,22 +117,25 @@ for i in range(2):
                     file.write(new_item+":"+inv_dict[new_item]+"\n")
 
         file.close()
+
+        #file and inventory stats
         print("FILE IS THIS LONG:{}, PAGE INVENTORY IS THIS LONG:{}".format(len(file_line), len(inv_dict)))
-        print(inv_dict)  
-        print('\n', file_line)
+        print(inv_dict, '\n', file_line)  
 
     else:
         print("OUR SHIP IS TAKING ON WATER", len(inventory), len(item_costs))
 
 
     #If commented out, prevents selenium browser from autoclosing after script runs
-    time.sleep(20) #use this to run the script multiple times --this is the time block in between
+    time.sleep(45) #use this to run the script multiple times --this is the time block in between
+
+    #stats on how many times it's been run and how long it takes
     counter += 1 
     end = time.time()
     interval_time = end-start-20
     total_time = total_time + (end-start)
-    print("ROUND: ", counter, '\n', 'TIME NEEDED TO RUN: ', "{:.2f}".format(interval_time), '\n',
-                         'TOTAL TIME TAKEN: ', "{:.2f}".format(total_time), '\n\n\n\n\n') 
+    print("ROUND: ", counter, '\n', 'TIME NEEDED FOR THIS ROUND TO RUN: ', "{:.2f}".format(interval_time),
+                             '\n','TOTAL TIME TAKEN: ', "{:.2f}".format(total_time), '\n\n\n\n\n\n') 
 
 
 #run script multiple times 
