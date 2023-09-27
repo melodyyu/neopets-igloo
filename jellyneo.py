@@ -16,7 +16,7 @@ import filter
     
 #open selenium browser 
 options = webdriver.ChromeOptions()
-# options.add_argument("--headless=new") #leave this commented for browser to appear
+options.add_argument("--headless=new") #leave this commented for browser to appear
 options.page_load_strategy = 'none'
 
 chrome_path = ChromeDriverManager().install()
@@ -45,20 +45,12 @@ element = WebDriverWait(driver, 10).until(expected_conditions.presence_of_elemen
 #extract price
 jn_prices = []
 jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
-print(type(jn_text))
 
-# jn_price = re.findall(r'\d+', jn_text)
-# print(jn_price)
-test = filter(jn_text.isdigit(), jn_text)
-print(test)
+jn_price = re.sub("\D","",jn_text) #remove extra, return only digits
+print(jn_price)
 
-print(jn_text.isdigit()) #returns False
-# filter(jn_text.isdigit()) #returns 'module' object is not callable but isdigit is good and jn_text is a str
-
-# jn_price = ''.join(filter(str.isdigit, jn_text))
-# print(jn_price)
-# jn_prices.append(jn_price)
-# print(jn_prices)
+jn_prices.append(jn_price)
+print(jn_prices)
 
 
 driver.quit()
