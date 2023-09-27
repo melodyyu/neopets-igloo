@@ -6,8 +6,14 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By 
 
 #for explicitly waiting
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+#for new inputs
+from selenium.webdriver.common.keys import Keys
+
+#deal with stale elements
+from selenium.common.exceptions import StaleElementReferenceException
 
 import time
 import re
@@ -16,7 +22,7 @@ import filter
     
 #open selenium browser 
 options = webdriver.ChromeOptions()
-options.add_argument("--headless=new") #leave this commented for browser to appear
+# options.add_argument("--headless=new") #leave this commented for browser to appear
 options.page_load_strategy = 'none'
 
 chrome_path = ChromeDriverManager().install()
@@ -31,29 +37,50 @@ url = 'https://items.jellyneo.net/'
 driver.get(url)
 
 
-#put input into jn search bar 
-search_bar = driver.find_element(By.ID, "search-name")
 
-#take input from df name row
-name = "Simple Yellow Chair"
-# for name in filter.item_names:
-search_bar.send_keys(name)
-search_bar.submit()
-#wait for new page to load then grab elements 
-element = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
 
-#extract price
+round = 0
 jn_prices = []
-jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
+for name in filter.item_names:
+  print(round)
 
-jn_price = re.sub("\D","",jn_text) #remove extra, return only digits
-print(jn_price)
+  #wait for element to be clickable 
+  WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
+  print("I WAITED")
 
-jn_prices.append(jn_price)
-print(jn_prices)
+  #put input into jn search bar - need to be in forloop to refind element
+  search_bar = driver.find_element(By.ID, "search-name")
 
+  try:
+    search_bar.click()
+  except StaleElementReferenceException as e:
+    print("StaleElementReferenceException occurred:", str(e))
 
-driver.quit()
+  search_bar.clear()
+  print("CLEARING")
+  search_bar.send_keys(name)
+  print("INPUT THIS: {}".format(name))
+  search_bar.submit()
+  print("SUBMITTED")
+
+  #wait for new page to load then grab elements 
+  WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
+  print("WAITING")
+
+  #extract price
+  jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
+  print("FOUND ELEMENT")
+
+  #remove extra, return only digits
+  jn_price = re.sub("\D","",jn_text) 
+  print(jn_price)
+
+  jn_prices.append(jn_price)
+  print('\n', jn_prices, '\n')
+  round+=1 
+  # time.sleep(5)
+
+# driver.quit()
 
   
 #look at the resulting page. save the price & category in respective array (or dictionary)
