@@ -12,8 +12,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 #for new inputs
 from selenium.webdriver.common.keys import Keys
 
-#deal with stale elements
+#deal with exceptions
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 
 import time
 import re
@@ -42,11 +43,15 @@ driver.get(url)
 round = 0
 jn_prices = []
 for name in filter.item_names:
+  timer = time.time()
   print(round)
 
   #wait for element to be clickable 
-  WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
-  print("I WAITED")
+  try:
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
+    print("I WAITED")
+  except TimeoutException as e:
+    print("TimeoutException occurred: {}, because it took this long: {}".format(str(e), timer))
 
   #put input into jn search bar - need to be in forloop to refind element
   search_bar = driver.find_element(By.ID, "search-name")
@@ -64,8 +69,12 @@ for name in filter.item_names:
   print("SUBMITTED")
 
   #wait for new page to load then grab elements 
-  WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
-  print("WAITING")
+  try:
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
+    print("WAITING")
+  except TimeoutException as e:
+    print("TimeoutException occurred: {}, because it took this long: {}".format(str(e), timer/60))
+  
 
   #extract price
   jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
