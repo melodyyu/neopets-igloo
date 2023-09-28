@@ -20,7 +20,7 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 import re
 
-import filter
+import clean
     
 #open selenium browser 
 options = webdriver.ChromeOptions()
@@ -38,21 +38,31 @@ driver.implicitly_wait(5) #need this so site can load before next step
 url = 'https://items.jellyneo.net/'
 driver.get(url)
 
+item_names, item_prices = clean.filter_inventory()
 
 
+
+def timer(start,end):
+  hours, rem = divmod(end-start, 3600)
+  minutes, seconds = divmod(rem, 60)
+  formatted_time = f"{int(hours):02}:{int(minutes):02}:{seconds:05.2f}"
+  return formatted_time
+  # print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+  
 
 round = 0
 jn_prices = []
-for name in filter.item_names:
-  timer = time.time()
-  print(round)
+script_start = time.time()
+for name in item_names:
+  iter_timer = time.time()
+  print("ROUND: {}".format(round))
 
   #wait for element to be clickable 
   try:
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
-    print("I WAITED")
+    print("WAITED FOR ELEMENT TO BE CLICKABLE")
   except TimeoutException as e:
-    print("TimeoutException occurred: {}, because it took this long: {}".format(str(e), timer))
+    print("TimeoutException occurred: {}, because it took too long to click: {}".format(str(e), iter_timer))
 
   #put input into jn search bar - need to be in forloop to refind element
   search_bar = driver.find_element(By.ID, "search-name")
@@ -63,7 +73,7 @@ for name in filter.item_names:
     print("StaleElementReferenceException occurred:", str(e))
 
   search_bar.clear()
-  print("CLEARING")
+  print("CLEARING SEARCH BAR")
   search_bar.send_keys(name)
   print("INPUT THIS: {}".format(name))
   search_bar.submit()
@@ -71,33 +81,57 @@ for name in filter.item_names:
 
   #wait for new page to load then grab elements 
   try:
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
-    print("WAITING")
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
+    print("WAITING FOR NEW PAGE TO LOAD")
   except TimeoutException as e:
-    print("TimeoutException occurred: {}, because it took this long: {}".format(str(e), timer/60))
+    exception_timer = time.time()
+    print("TimeoutException occurred: {}, because it took this long to load: {}".format(str(e), timer(iter_timer, exception_timer)))
   
-
-  #extract price - if none, print 0 and continue
-  try:
-    jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
-    print("FOUND ELEMENT")
-
-    #remove extra, return only digits
-    jn_price = re.sub("\D","",jn_text) 
-    
-  except NoSuchElementException as e:
-    print("Element didn't have a price; added as 0 instead")
+  #handle specific cases; otherwise, deal with exceptions normally
+  if "Wall Paint" in name or "Floor Tiles" in name:
+    print("IT WAS EITHER A WALL PAINT OR A FLOOR TILE -- ", name)
     jn_price = 0
-    
-  print(jn_price)
+  else:
+    #extract price - if none, print 0 and continue
+    try:
+      jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
+      print("FOUND ELEMENT")
+
+      #remove extra, return only digits
+      jn_price = re.sub("\D","",jn_text) 
+    except NoSuchElementException as e:
+      print("Element didn't have a price; added as 0 instead")
+      jn_price = 0
+
+  print("PRICE: {}".format(jn_price))
   jn_prices.append(jn_price)
   print('\n', jn_prices, '\n')
   round+=1 
   # time.sleep(5)
 
+#print total time it's taken to run:
+script_end = time.time()
+print("TOTAL TIME TAKEN TO RUN JN SCRIPT: {}".format(timer(script_start, script_end)))
 # driver.quit()
 
-  
-#look at the resulting page. save the price & category in respective array (or dictionary)
-  #what if i just add it to inventory.txt by separating it with ; or - 
-  #or would it be better if i return arrays in this file 
+
+# add prices to inventory.txt; separate with -
+with open("inventory.txt", "r+") as file:
+  file.seek(0) #sets cursor at top of file; "a+" auto puts it at end
+  file_line = file.read().splitlines()
+
+  #add to file only if length of file and price array match
+  if len(file_line) == len(jn_prices):
+    print("SIZES ARE A MATCH -- GOING IN")
+    #read line by line; after each line, add jn price
+    modified_lines = []
+    for line in range(len(file_line)):
+      modified_line = file_line[line] + ";" + str(jn_prices[line]) + "\n"
+      modified_lines.append(modified_line)
+    file.seek(0) #reset cursor 
+    file.writelines(modified_lines)
+      # file.write(file_line[line]+";")
+  else:
+     print("{} != {}. FILE SIZE AND ARRAY LENGTH DIDN'T MATCH -- ABORT!".format(len(file_line), len(jn_prices)))
+file.close()
+
