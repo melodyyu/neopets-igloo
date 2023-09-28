@@ -111,7 +111,7 @@ for i in range(50):
                 
                 #append new items to txt file as name:price 
                 for new_item in new_items:
-                    file.write(new_item+":"+inv_dict[new_item]+"\n")
+                    file.write(new_item+":"+inv_dict[new_item])
 
         file.close()
 
