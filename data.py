@@ -8,8 +8,9 @@ import clean
 
 ##Create dF with dictionary of lists 
 data = {
-    "Name": filter.item_names,
-    "Igloo Prices": filter.item_prices
+    "Name": clean.item_names,
+    "Igloo Prices": clean.item_prices, 
+    "Jellyneo Prices": clean.jn_prices
 }
 
 df = pd.DataFrame(data)
