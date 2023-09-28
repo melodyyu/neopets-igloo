@@ -38,7 +38,7 @@ driver.implicitly_wait(5) #need this so site can load before next step
 url = 'https://items.jellyneo.net/'
 driver.get(url)
 
-item_names, item_prices = clean.filter_inventory()
+item_names, item_prices, jn_prices = clean.filter_inventory()
 
 
 
