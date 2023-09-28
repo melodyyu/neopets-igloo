@@ -10,8 +10,8 @@ item_names, item_prices, jn_prices = clean.filter_inventory()
 ##Create dF with dictionary of lists 
 data = {
     "Name": item_names,
-    "Igloo Prices": item_prices, 
-    "JN Prices": jn_prices
+    "Igloo Price": item_prices, 
+    "JN Price": jn_prices
 }
 
 df = pd.DataFrame(data)
