@@ -1,7 +1,7 @@
 import pandas as pd
 
 #import other files in directory
-import filter
+import clean
 
 
 # df = pd.DataFrame(columns=['Name', 'Igloo Price', 'Jellyneo Price', 'Category'])
