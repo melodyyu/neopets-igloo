@@ -15,6 +15,7 @@ from selenium.webdriver.common.keys import Keys
 #deal with exceptions
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 
 import time
 import re
@@ -76,14 +77,19 @@ for name in filter.item_names:
     print("TimeoutException occurred: {}, because it took this long: {}".format(str(e), timer/60))
   
 
-  #extract price
-  jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
-  print("FOUND ELEMENT")
+  #extract price - if none, print 0 and continue
+  try:
+    jn_text = driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span").text
+    print("FOUND ELEMENT")
 
-  #remove extra, return only digits
-  jn_price = re.sub("\D","",jn_text) 
+    #remove extra, return only digits
+    jn_price = re.sub("\D","",jn_text) 
+    
+  except NoSuchElementException as e:
+    print("Element didn't have a price; added as 0 instead")
+    jn_price = 0
+    
   print(jn_price)
-
   jn_prices.append(jn_price)
   print('\n', jn_prices, '\n')
   round+=1 
