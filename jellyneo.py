@@ -38,7 +38,7 @@ driver.implicitly_wait(5) #need this so site can load before next step
 url = 'https://items.jellyneo.net/'
 driver.get(url)
 
-item_names, item_prices, jn_prices = clean.filter_inventory()
+item_names = clean.filter_names()
 
 
 
@@ -51,8 +51,10 @@ def timer(start,end):
   
 
 round = 0
-jn_prices = []
 script_start = time.time()
+
+jn_prices = []
+categories = [] 
 for name in item_names:
   iter_timer = time.time()
   print("ROUND: {}".format(round))
@@ -62,7 +64,7 @@ for name in item_names:
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
     print("WAITED FOR ELEMENT TO BE CLICKABLE")
   except TimeoutException as e:
-    print("TimeoutException occurred: {}, because it took too long to click: {}".format(str(e), iter_timer))
+    print("TimeoutException occurred because it took too long to click: {}".format(iter_timer))
 
   #put input into jn search bar - need to be in forloop to refind element
   search_bar = driver.find_element(By.ID, "search-name")
@@ -85,7 +87,7 @@ for name in item_names:
     print("WAITING FOR NEW PAGE TO LOAD")
   except TimeoutException as e:
     exception_timer = time.time()
-    print("TimeoutException occurred: {}, because it took this long to load: {}".format(str(e), timer(iter_timer, exception_timer)))
+    print("TimeoutException occurred because it took this long to load: {}".format(timer(iter_timer, exception_timer)))
   
   #handle specific cases; otherwise, deal with exceptions normally
   if "Wall Paint" in name or "Floor Tiles" in name:
@@ -106,8 +108,31 @@ for name in item_names:
   print("PRICE: {}".format(jn_price))
   jn_prices.append(jn_price)
   print('\n', jn_prices, '\n')
+  
+  link_locator = "//a[text()='" + name + "']"
+  #click the item's link
+  try:
+    link_element = driver.find_element(By.XPATH, link_locator)
+    link_element.click()
+  except NoSuchElementException as e:
+    print("NoSuchElementException")
+
+  #find the category
+  
+  try:
+    partial_text =  '- This is the official type for this item on Neopets.'
+    category_locator = "//li[contains(text(), '" + partial_text + "')]/a/strong" #find category based off description string
+    category = driver.find_element(By.XPATH, category_locator).text
+    print(category)
+  except NoSuchElementException as e:
+    print("NoSuchElementException, so put None instead")
+    category = "None"
+    
+  categories.append(category)
+  print("CATEGORY: {}".format(category))
+  print('\n', categories, '\n')
+
   round+=1 
-  # time.sleep(5)
 
 #print total time it's taken to run:
 script_end = time.time()
@@ -121,17 +146,17 @@ with open("inventory.txt", "r+") as file:
   file_line = file.read().splitlines()
 
   #add to file only if length of file and price array match
-  if len(file_line) == len(jn_prices):
+  if len(file_line) == len(jn_prices) == len(categories):
     print("SIZES ARE A MATCH -- GOING IN")
-    #read line by line; after each line, add jn price
+    #read line by line; after each line, add jn price and categories
     modified_lines = []
     for line in range(len(file_line)):
-      modified_line = file_line[line] + ";" + str(jn_prices[line]) + "\n"
+      modified_line = file_line[line] + "-" + str(jn_prices[line]) + ";" + categories[line] + '\n'
       modified_lines.append(modified_line)
     file.seek(0) #reset cursor 
     file.writelines(modified_lines)
       # file.write(file_line[line]+";")
   else:
-     print("{} != {}. FILE SIZE AND ARRAY LENGTH DIDN'T MATCH -- ABORT!".format(len(file_line), len(jn_prices)))
+     print("{} != {} != {}. FILE SIZE AND ARRAY LENGTH DIDN'T MATCH -- ABORT!".format(len(file_line), len(jn_prices), len(categories)))
 file.close()
 
