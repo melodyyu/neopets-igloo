@@ -62,7 +62,7 @@ for name in item_names:
   #wait for element to be clickable 
   try:
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "search-name")))
-    print("WAITED FOR ELEMENT TO BE CLICKABLE")
+    # print("WAITED FOR ELEMENT TO BE CLICKABLE")
   except TimeoutException as e:
     print("TimeoutException occurred because it took too long to click: {}".format(iter_timer))
 
@@ -75,16 +75,16 @@ for name in item_names:
     print("StaleElementReferenceException occurred:", str(e))
 
   search_bar.clear()
-  print("CLEARING SEARCH BAR")
+  # print("CLEARING SEARCH BAR")
   search_bar.send_keys(name)
   print("INPUT THIS: {}".format(name))
   search_bar.submit()
-  print("SUBMITTED")
+  # print("SUBMITTED")
 
   #wait for new page to load then grab elements 
   try:
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[4]/div[1]/ul[2]/li/span")))
-    print("WAITING FOR NEW PAGE TO LOAD")
+    # print("WAITING FOR NEW PAGE TO LOAD")
   except TimeoutException as e:
     exception_timer = time.time()
     print("TimeoutException occurred because it took this long to load: {}".format(timer(iter_timer, exception_timer)))
@@ -109,6 +109,7 @@ for name in item_names:
   jn_prices.append(jn_price)
   print('\n', jn_prices, '\n')
   
+  #reset text; look for hyperlink with same name
   link_locator = "//a[text()='" + name + "']"
   #click the item's link
   try:
@@ -118,12 +119,11 @@ for name in item_names:
     print("NoSuchElementException")
 
   #find the category
-  
   try:
     partial_text =  '- This is the official type for this item on Neopets.'
     category_locator = "//li[contains(text(), '" + partial_text + "')]/a/strong" #find category based off description string
     category = driver.find_element(By.XPATH, category_locator).text
-    print(category)
+    # print(category)
   except NoSuchElementException as e:
     print("NoSuchElementException, so put None instead")
     category = "None"
@@ -137,7 +137,7 @@ for name in item_names:
 #print total time it's taken to run:
 script_end = time.time()
 print("TOTAL TIME TAKEN TO RUN JN SCRIPT: {}".format(timer(script_start, script_end)))
-# driver.quit()
+driver.quit()
 
 
 # add prices to inventory.txt; separate with -
@@ -150,12 +150,13 @@ with open("inventory.txt", "r+") as file:
     print("SIZES ARE A MATCH -- GOING IN")
     #read line by line; after each line, add jn price and categories
     modified_lines = []
+
     for line in range(len(file_line)):
       modified_line = file_line[line] + "-" + str(jn_prices[line]) + ";" + categories[line] + '\n'
       modified_lines.append(modified_line)
+
     file.seek(0) #reset cursor 
     file.writelines(modified_lines)
-      # file.write(file_line[line]+";")
   else:
      print("{} != {} != {}. FILE SIZE AND ARRAY LENGTH DIDN'T MATCH -- ABORT!".format(len(file_line), len(jn_prices), len(categories)))
 file.close()
