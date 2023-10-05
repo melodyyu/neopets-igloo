@@ -5,13 +5,15 @@ import clean
 
 
 # df = pd.DataFrame(columns=['Name', 'Igloo Price', 'Jellyneo Price', 'Category'])
-item_names, item_prices, jn_prices = clean.filter_inventory()
+item_names = clean.filter_names()
+item_prices, jn_prices, categories = clean.filter_inventory()
 
 ##Create dF with dictionary of lists 
 data = {
     "Name": item_names,
     "Igloo Price": item_prices, 
-    "JN Price": jn_prices
+    "JN Price": jn_prices,
+    "Categories": categories
 }
 
 df = pd.DataFrame(data)
