@@ -1,26 +1,77 @@
-Surfboard Keyring:29
-Very Rotten Tomato:40
-Chunky Meaty Stew:84
-Dung Cream Sandwich:38
-Blue Maraqua Wall Paint:137
-Blue Meridell Wall Paint:137
-Green Mystery Island Wall Paint:137
-Yellow Neopia Central Wall Paint:137
-Red Shenkuu Wall Paint:137
-Blue Terror Mountain Wall Paint:137
-Brown Tyrannia Wall Paint:137
-Yellow Brightvale Wall Paint:137
-Purple Darigan Citadel Wall Paint:137
-Green Kiko Lake Wall Paint:137
-Purple Kreludor Wall Paint:137
-Golden Lost Desert Wall Paint:137
-Basic Red Floor Tiles:170
-Basic Peach Floor Tiles:170
-Basic Orange Floor Tiles:170
-Basic Yellow Floor Tiles:170
-Basic Mint Green Floor Tiles:170
-Basic Green Floor Tiles:170
-Basic Blue Floor Tiles:170
-Basic Violet Floor Tiles:170
-Basic Purple Floor Tiles:170
-Mashed Mud with Gravy:3012
+Orange Cap:70-760;Clothes
+Peaburger Delight:56-130;Gross Food
+Wet Snowball:31-45;Battle Magic
+Sand Orange:327-1275;Desert Food
+Scrambled Egg on Toast:183-95;Baked
+Simple Blue Lamp:371-1000;Special
+Simple Green Side Table:874-2800;Special
+Snuffly Markers:278-1275;School
+Green Mystery Island Wall Paint:137-0;Special
+Red Shenkuu Wall Paint:137-0;Special
+Blue Terror Mountain Wall Paint:137-0;Special
+Brown Tyrannia Wall Paint:137-0;Special
+Grey Virtupets Wall Paint:137-0;Special
+Purple Darigan Citadel Wall Paint:137-0;Special
+Pink Faerieland Wall Paint:137-0;Special
+Orange Haunted Woods Wall Paint:137-0;Special
+Golden Lost Desert Wall Paint:137-0;Special
+Pink Lutari Island Wall Paint:137-0;Special
+Basic Red Floor Tiles:170-0;Special
+Basic Peach Floor Tiles:170-0;Special
+Basic Orange Floor Tiles:170-0;Special
+Basic Buff Floor Tiles:170-0;Special
+Basic Yellow Floor Tiles:170-0;Special
+Basic Green Floor Tiles:170-0;Special
+Basic Blue Floor Tiles:170-0;Special
+Basic Violet Floor Tiles:170-0;Special
+Basic Purple Floor Tiles:170-0;Special
+Split Recorder:190-290;Instrument
+Quick Reference Dictionary:454-2175;Book
+Ummagine Tea:292-1300;Coffee
+Happy Wocky Tails:191-1300;Book
+Sugared Meatballs:53-65;Gross Food
+Dried Lotus Root Sweets:182-3300;Candy
+Jade Staff:1089-480;Wonderous Weaponry
+Krawk Clacker:246-300;Toy
+Giant Grarrl Burger:212-1350;Food
+Melting Ice Cube:154-900;Gift
+Grilled Stuffed Tofu:109-55;Exotic Foods
+Ruki Push Up Toy:210-100;Toy
+Millipod Powder:100-950;Grooming
+Spoogentberry Ixi Hoofprint Cookie:79-1800;Baked
+ErgyFruit Sour Saucer:105-1100;Candy
+Constellation Soup:339-2300;Space Food
+Half Eaten Bar of Chocolate:230-100;Gross Food
+Red Satin Collar:188-2000;Clothes
+Olive Pretzel:374-1700;Baked
+Striped Notebook:108-1325;School
+Red Brick Fireplace:732-460;Furniture
+Chocolate Lamp:473-800;Furniture
+Molabean:232-900;Tropical Food
+Honeydew Melon:249-3475;Food
+Checkered Carrot:256-1900;Food
+Crate of Fruit:103-75;Gift
+Intergalactic Planet Dairy:74-1000;Space Food
+Split Meerca Plushie:274-500;Plushies
+Green Paper Glider:81-950;Toy
+Kyrii Grooming Station:75-810;Toy
+Baby Space Fungus Plushie:362-2000;Plushies
+Green Ink Pad:261-200;School
+Dramatic Banjo:230-500;Instrument
+Tribal Lupe Trousers:730-370;Clothes
+Gnorbu Snowbeast Costume Gloves:753-2450;Clothes
+Red Blush:30-55;Grooming
+Stream of Light:140-900;Magic Item
+Funky Blue Table:589-350;Furniture
+Basic Shield of Flight:64-50;Defence Magic
+Blue Cup and Ball Toy:82-35;Toy
+Sticky Gormball:223-17;Toy
+Snuffly Folder:190-970;School
+Big Sling Gun:117-670;Toy
+Plain Rubber Bands:48-650;School
+Faerieland Building Blocks:191-45;Toy
+Gelert Handle Jump Rope:97-25;Toy
+Meerca Maid Bloomers:266-150;Clothes
+Sloth Dartboard:80-600;Toy
+Nest Chair:753-3000;Furniture
+Trippy Ruki Bangle:694-760;Clothes

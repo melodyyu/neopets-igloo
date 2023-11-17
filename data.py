@@ -1,3 +1,8 @@
+""" This script creates a dataframe using lists that have been cleaned from 
+clean.py. These lists comprise the inventory and includes the
+following information: the item's name, its price as sold in the igloo, its 
+market price and the category that item would be considered as. """
+
 import pandas as pd
 
 #import other files in directory

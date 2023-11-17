@@ -1,3 +1,7 @@
+""" This script uses Selenium to open a browser that will log into Neopets,
+access the igloo site, and save the items being sold there and their respective
+prices as additions to the inventory.txt file """
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 

@@ -1,3 +1,7 @@
+""" This script takes the information from inventory.txt (which at this point
+is populated with names, igloo prices, jellyneo prices and jellyneo categories)
+and isolate the information into individual lists"""
+
 #take inventory.txt file and isolate just the names
 def filter_names():
   item_names = [] 

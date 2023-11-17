@@ -1,3 +1,6 @@
+""" This script returns an item's price from its respective search result on 
+Jellyneo.net and populates its listing in inventory.txt"""
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
